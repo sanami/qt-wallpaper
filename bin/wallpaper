@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+
+# The command line runner
+require File.expand_path('../../app/main.rb', __FILE__)

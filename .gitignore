@@ -1,0 +1,6 @@
+.bundle/
+.idea/
+1/
+config/*.yaml
+log/*.log
+tmp/
