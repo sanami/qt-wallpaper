@@ -6,11 +6,15 @@ require 'pathname'
 require 'bundler'
 Bundler.require
 
-ROOT_PATH = File.expand_path('../../', __FILE__)
-#puts ROOT_PATH
+ROOT_PATH = Pathname.new File.expand_path('../../', __FILE__)
 
 def ROOT(file)
-	File.join(ROOT_PATH, file)
+	ROOT_PATH + file
+end
+
+# Ensure existing folders
+['db', 'config', 'log', 'tmp'].each do |path|
+	FileUtils.mkpath ROOT(path)
 end
 
 # Required folders
@@ -19,9 +23,7 @@ end
 end
 #pp $:
 
-# Search for required files
-required_files = ['misc.rb', 'qt/misc.rb', 'settings.rb']
-
+# Search for shared folder
 path = Pathname.new(File.dirname(__FILE__))
 name = 'shared'
 
@@ -37,7 +39,8 @@ end
 
 #pp dir
 
-required_files.each do |file_name|
+# Required files
+['misc.rb', 'qt/misc.rb', 'settings.rb'].each do |file_name|
 	require dir + file_name
 end
 

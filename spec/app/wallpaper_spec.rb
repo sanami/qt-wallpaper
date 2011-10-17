@@ -3,7 +3,7 @@ require 'wallpaper.rb'
 
 describe Wallpaper do
 	subject do
-		Wallpaper.new(ROOT('/tmp'))
+		Wallpaper.new(ROOT('tmp'))
 	end
 
 	describe 'with test' do

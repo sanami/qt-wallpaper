@@ -1,5 +1,5 @@
-Qt::require ROOT('/resources/form.ui'), ROOT('/tmp')
-Qt::require ROOT('/resources/resources.qrc'), ROOT('/tmp')
+Qt::require ROOT('resources/form.ui'), ROOT('/tmp')
+Qt::require ROOT('resources/resources.qrc'), ROOT('/tmp')
 
 class Form < Qt::MainWindow
 	slots 'on_action_quit_triggered()'

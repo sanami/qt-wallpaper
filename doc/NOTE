@@ -1,0 +1,2 @@
+----------------------------------------------------------------------------- requirements
+sudo apt-get install libmagickcore-dev libmagickwand-dev

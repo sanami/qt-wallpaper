@@ -26,4 +26,4 @@ RSpec.configure do |config|
 #  config.use_transactional_fixtures = true
 end
 
-TEST_DIR = ROOT('/1/test')
+TEST_DIR = ROOT('1/test')

@@ -7,8 +7,8 @@ class App
 	def initialize
 		parse_cmd_line
 
-		@settings = Settings.new(ROOT('/config/settings.yaml'))
-		@wall = Wallpaper.new(ROOT('/tmp'))
+		@settings = Settings.new(ROOT('config/settings.yaml'))
+		@wall = Wallpaper.new(ROOT('tmp'))
 
 		if @options.pics_path
 			@settings.current_dir = @options.pics_path
