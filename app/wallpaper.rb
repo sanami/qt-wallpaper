@@ -43,7 +43,7 @@ class Wallpaper
 				#di.find_jpeg_size
 				#puts "#{path}\n\t#{di.width} x #{di.height}"
 
-				if File.size(path)  > 300000
+				if File.size(path)  > 100000
 					@all_pics << path
 					@all_pics_by_folder[File.dirname(path)] << path
 
@@ -72,13 +72,32 @@ class Wallpaper
 			pic_path = process_pic pic
 
 			#FileUtils.copy pic_path, './choice.jpg'
-			`gconftool-2 -t str  -s /desktop/gnome/background/picture_filename "#{pic_path}"`
+			#wallpaper_set_gnome(pic_path)
+			wallpaper_set_xfce(pic_path)
+
 			@history << pic.filename
 		end
 
 		GC.start
 	end
-	
+
+	##
+	# Установка обои в Gnome
+	def wallpaper_set_gnome(pic_path)
+		`gconftool-2 -t str  -s /desktop/gnome/background/picture_filename "#{pic_path}"`
+	end
+
+	##
+	# Установка обои в Xfce
+	def wallpaper_set_xfce(pic_path)
+		prop = "/backdrop/screen0/monitor0/image-show"
+		`xfconf-query -c xfce4-desktop -p #{prop} -s true`
+
+		prop = "/backdrop/screen0/monitor0/image-path"
+		`xfconf-query -c xfce4-desktop -p #{prop} -s ""`
+		`xfconf-query -c xfce4-desktop -p #{prop} -s "#{pic_path}"`
+	end
+
 	##
 	# Выбрать подходящую картинку
 	def select_pic
@@ -113,11 +132,13 @@ class Wallpaper
 	##
 	# Следующая случайная картинка
 	def get_random_pic
+		all = nil
 		if folder_selection == :same && !@history.empty?
-			@all_pics_by_folder[File.dirname(@history.last)].sample
+			all = @all_pics_by_folder[File.dirname(@history.last)]
 		else
-			@all_pics.respond_to?(:sample) ? @all_pics.sample : @all_pics.choice
+			all = @all_pics
 		end
+		all.respond_to?(:sample) ? @all_pics.sample : @all_pics.choice
 	end
 
 	##
