@@ -1,4 +1,3 @@
-require 'rubygems'
 require 'ostruct'
 require 'pp'
 require 'pathname'
@@ -13,12 +12,12 @@ def ROOT(file)
 end
 
 # Ensure existing folders
-['db', 'config', 'log', 'tmp'].each do |path|
+['config', 'log', 'tmp'].each do |path|
 	FileUtils.mkpath ROOT(path)
 end
 
 # Required folders
-['app', 'lib'].each do |folder|
+['lib'].each do |folder|
 	$: << ROOT(folder)
 end
 #pp $:

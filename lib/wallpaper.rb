@@ -1,4 +1,3 @@
-# encoding: utf-8
 require 'find'
 require 'fileutils'
 require 'RMagick'
@@ -32,7 +31,6 @@ class Wallpaper
 		@history.clear
 	end
 
-	##
 	# Найти все картинки в подкаталогах
 	def find(pics_path)
 		count = 0
@@ -57,7 +55,6 @@ class Wallpaper
 	  count
 	end
 
-	##
 	# Запустить сервис
 	def run(step)
 		pic = case step
@@ -81,13 +78,11 @@ class Wallpaper
 		GC.start
 	end
 
-	##
 	# Установка обои в Gnome
 	def wallpaper_set_gnome(pic_path)
 		`gconftool-2 -t str  -s /desktop/gnome/background/picture_filename "#{pic_path}"`
 	end
 
-	##
 	# Установка обои в Xfce
 	def wallpaper_set_xfce(pic_path)
 		prop = "/backdrop/screen0/monitor0/image-show"
@@ -98,7 +93,6 @@ class Wallpaper
 		`xfconf-query -c xfce4-desktop -p #{prop} -s "#{pic_path}"`
 	end
 
-	##
 	# Выбрать подходящую картинку
 	def select_pic
 		return nil if @all_pics.empty?
@@ -120,7 +114,6 @@ class Wallpaper
 		Magick::ImageList.new get_random_pic
 	end
 
-	##
 	# Предыдущая картинка
 	def select_pic_prev
 		return nil if @history.size < 2
@@ -129,7 +122,6 @@ class Wallpaper
 		Magick::ImageList.new @history.pop # Предыдущая
 	end
 
-	##
 	# Следующая случайная картинка
 	def get_random_pic
 		all = nil
@@ -141,7 +133,6 @@ class Wallpaper
 		all.respond_to?(:sample) ? @all_pics.sample : @all_pics.choice
 	end
 
-	##
 	# Обработать картинку
 	def process_pic(pic)
 		pic = pic.resize_to_fit(@screen_res.width, @screen_res.height)
@@ -158,7 +149,7 @@ class Wallpaper
 		
 		wall.composite!(pic, x_align, 0, Magick::CopyCompositeOp)
 		
-		wall_path = @work_dir + '/wallpaper.jpg'
+		wall_path = @work_dir + 'wallpaper.jpg'
 		wall.write(wall_path) { self.quality = 100 }
 		pic_path = File.expand_path wall_path
 		

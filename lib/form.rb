@@ -1,5 +1,5 @@
-Qt::require ROOT('resources/form.ui'), ROOT('/tmp')
-Qt::require ROOT('resources/resources.qrc'), ROOT('/tmp')
+Qt::require ROOT('resources/form.ui'), ROOT('tmp')
+Qt::require ROOT('resources/resources.qrc'), ROOT('tmp')
 
 class Form < Qt::MainWindow
 	slots 'on_action_quit_triggered()'
@@ -32,7 +32,6 @@ class Form < Qt::MainWindow
 	end
 
 protected
-	##
 	# Не должен быть private
 	def closeEvent(e)
 		unless $debug
@@ -50,7 +49,6 @@ protected
 	end
 
 private
-	##
 	# Инициализация GUI
 	def init_ui
 		@ui = Ui::Form.new
@@ -100,13 +98,11 @@ private
 		show_message "#{t} #{pic.filename}"
 	end
 
-	##
 	# Выйти из программы
 	def on_action_quit_triggered
 		$qApp.quit
 	end
 
-	##
 	# Очистить список картинок
 	def on_action_new_triggered
 		if Qt::MessageBox::question(self, "Confirm Clear", "Are you sure?", Qt::MessageBox::Ok, Qt::MessageBox::Cancel) == Qt::MessageBox::Ok
@@ -115,7 +111,6 @@ private
 		end
 	end
 
-	##
 	# Открыть диалог добавление каталога
 	def on_action_open_triggered
 		@settings.current_dir ||= '.'
@@ -126,7 +121,6 @@ private
 		end
 	end
 
-	##
 	# Добавить картинки из нового каталога
 	def add_folder(dir_name)
 		pics_count = @wall.find(dir_name) do |dir|
@@ -135,7 +129,6 @@ private
 		show_message "Found #{pics_count} pics"
 	end
 
-	##
 	# Запустить смену картинку
 	def on_change_wallpaper
 		@wall.run :next do |pic|
@@ -143,7 +136,6 @@ private
 		end
 	end
 	
-	##
 	# Сменить и перезапустить таймер
 	def on_toolButton_clicked
 		@timer.stop # Остановить, иначе может сработать во время работы и рестарт не поможет
@@ -151,7 +143,6 @@ private
 		@timer.start
 	end
 
-	##
 	# Сменить и перезапустить таймер
 	def on_toolButton_2_clicked
 		@timer.stop # Остановить, иначе может сработать во время работы и рестарт не поможет
@@ -161,13 +152,11 @@ private
 		@timer.start
 	end
 
-	##
 	# Остановить таймер
 	def on_toolButton_3_clicked
 		@timer.stop
 	end
 
-	##
 	# Открыть файл
 	def on_toolButton_4_clicked
 		if @settings.current_file
@@ -175,32 +164,27 @@ private
 		end
 	end
 
-	##
 	# Изменить время обновления
 	def on_comboBox_currentIndexChanged(text)
 		time = text.to_i*1000*60
 		@timer.setInterval time
 	end
 
-	##
 	# Изменить параметр выбора картинки
 	def on_comboBox_2_currentIndexChanged(text)
 		@wall.folder_selection = text.to_sym
 	end
 
-	##
 	# Изменить параметр выбора картинки
 	def on_comboBox_3_currentIndexChanged(text)
 		@wall.format_selection = text.to_sym
 	end
 
-	##
 	# Изменить параметр выравнивания картинки
 	def on_comboBox_4_currentIndexChanged(text)
 		@wall.pic_align = text.to_sym
 	end
 
-	##
 	# Минимизировать
 	def on_checkBox_clicked
 #		setWindowFlags(Qt::Window|Qt::FramelessWindowHint)
@@ -223,7 +207,6 @@ private
 # 		show
 	end
 
-	##
 	#TODO автозагрузка состояния контролов окна
 	def load_widget(parent)
 #		@settings.current_parser = @ui.tabWidget_parsers.currentIndex
@@ -291,7 +274,6 @@ private
 
 	end
 
-	##
 	# Загрузка и применение настроек
 	def load_settings
 		if @settings.form_geometry
@@ -303,7 +285,6 @@ private
 		end
 	end
 
-	##
 	# Сохранение настроек
 	def save_settings
 		@settings.form_geometry = self.saveGeometry.to_s

@@ -1,7 +1,7 @@
-# encoding: utf-8
 require 'optparse'
 require 'wallpaper.rb'
 
+#noinspection ALL
 class App
 
 	def initialize
