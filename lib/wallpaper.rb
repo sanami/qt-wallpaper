@@ -56,12 +56,32 @@ class Wallpaper
   end
 
   # Запустить сервис
-  def run(step)
-    pic = case step
+  def run(step, current_file = nil)
+    pic = nil
+    case step
       when :next
-        select_pic
+        pic = select_pic
       when :prev
-        select_pic_prev
+        pic = select_pic_prev
+      when :next_in_folder, :prev_in_folder
+        if current_file
+          current_index = @all_pics.index(current_file)
+          if current_index
+            if step == :next_in_folder
+              current_index += 1
+            else
+              current_index -= 1
+            end
+            pic = Magick::ImageList.new @all_pics[current_index]
+          end
+        end
+      when :random_in_folder
+        if current_file
+          all = @all_pics_by_folder[current_file]
+          unless !all || all.empty?
+            pic = Magick::ImageList.new(all.sample)
+          end
+        end
     end
 
     if pic
@@ -130,7 +150,7 @@ class Wallpaper
     else
       all = @all_pics
     end
-    all.respond_to?(:sample) ? @all_pics.sample : @all_pics.choice
+    all.respond_to?(:sample) ? all.sample : all.choice
   end
 
   # Обработать картинку
