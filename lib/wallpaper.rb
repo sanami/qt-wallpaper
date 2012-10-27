@@ -41,7 +41,7 @@ class Wallpaper
         #di.find_jpeg_size
         #puts "#{path}\n\t#{di.width} x #{di.height}"
 
-        if File.size(path)  > 100000
+        if File.size(path) > 100000
           @all_pics << path
           @all_pics_by_folder[File.dirname(path)] << path
 

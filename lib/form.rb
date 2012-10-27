@@ -2,7 +2,7 @@ Qt::require ROOT('resources/form.ui'), ROOT('tmp')
 Qt::require ROOT('resources/resources.qrc'), ROOT('tmp')
 
 class Form < Qt::MainWindow
-  slots 'on_change_wallpaper()'
+  slots 'on_timer_timeout()'
   slots 'on_toolButton_clicked()'
   slots 'on_toolButton_2_clicked()'
   slots 'on_toolButton_3_clicked()'
@@ -82,9 +82,29 @@ private
 
     #connect(@action_search, SIGNAL('triggered()'), self, SLOT('on_action_search_triggered()') )
     @timer = Qt::Timer.new
-    connect(@timer, SIGNAL('timeout()'), self, SLOT('on_change_wallpaper()') )
-    @timer.setInterval 1000*60*5
+    connect(@timer, SIGNAL('timeout()'), self, SLOT('on_timer_timeout()') )
+    @timer.setInterval 1000*60 # 1 minute
+    #@timer.setInterval 1000 # 1 second
     @timer.start
+
+    @timer_minute = 0
+    @timer_minute_limit = 5
+  end
+
+  # Timer timeout each 1 minute
+  def on_timer_timeout
+    #puts "#on_timer_minute #{@timer_minute} #{@timer_minute_limit}"
+    @timer_minute += 1
+    if @timer_minute > @timer_minute_limit
+      change_wallpaper
+
+      # Restart timer
+      reset_timer_minute
+    end
+  end
+
+  def reset_timer_minute
+    @timer_minute = 0
   end
 
   # Загрузка и применение настроек
@@ -121,9 +141,6 @@ private
     Qt::TreeWidgetItem.new @ui.files, [t, "#{pic.columns} x #{pic.rows}", pic.filesize.to_s, pic.filename]
 
     show_message "#{t} #{pic.filename}"
-
-    # Restart timer
-    @timer.start
   end
 
   # Очистить список картинок
@@ -153,7 +170,7 @@ private
   end
 
   # Запустить смену картинку
-  def on_change_wallpaper
+  def change_wallpaper
     @wall.run :next do |pic|
       inform_pic_change pic
     end
@@ -161,7 +178,7 @@ private
 
   # Сменить и перезапустить таймер
   def on_toolButton_clicked
-    on_change_wallpaper
+    change_wallpaper
   end
 
   # Сменить и перезапустить таймер
@@ -197,20 +214,27 @@ private
 
   # Остановить таймер
   def on_toolButton_3_clicked
-    @timer.stop
+    if @timer.isActive
+      @timer.stop
+      @ui.toolButton_3.setText '[>]'
+    else
+      @timer.start
+      @ui.toolButton_3.setText '[]'
+    end
   end
 
   # Открыть файл
   def on_toolButton_4_clicked
     if @settings.current_file
-      Qt::DesktopServices::openUrl(Qt::Url.new("file://#{@settings.current_file}"));
+      url = Qt::Url.fromLocalFile(@settings.current_file)
+      Qt::DesktopServices::openUrl(url);
     end
   end
 
   # Изменить время обновления
   def on_comboBox_currentIndexChanged(text)
-    time = text.to_i*1000*60
-    @timer.setInterval time
+    @timer_minute_limit = text.to_i
+    reset_timer_minute
   end
 
   # Изменить параметр выбора картинки

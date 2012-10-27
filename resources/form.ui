@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>528</width>
+    <width>562</width>
     <height>574</height>
    </rect>
   </property>
@@ -133,16 +133,16 @@
         </widget>
        </item>
        <item>
-        <widget class="QCheckBox" name="checkBox">
+        <widget class="QToolButton" name="toolButton_4">
          <property name="text">
-          <string/>
+          <string>open</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QToolButton" name="toolButton_4">
+        <widget class="QCheckBox" name="checkBox">
          <property name="text">
-          <string>exec</string>
+          <string/>
          </property>
         </widget>
        </item>
@@ -225,8 +225,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>528</width>
-     <height>30</height>
+     <width>562</width>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
