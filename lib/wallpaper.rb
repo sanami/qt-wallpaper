@@ -36,7 +36,7 @@ class Wallpaper
     count = 0
     pics_path = File.expand_path pics_path
     Find.find(pics_path) do |path|
-      if FileTest.file?(path) && File.extname(path) == '.jpg'
+      if FileTest.file?(path) && File.extname(path).downcase == '.jpg'
         #di = JpegDimensions.new path
         #di.find_jpeg_size
         #puts "#{path}\n\t#{di.width} x #{di.height}"
